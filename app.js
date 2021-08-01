@@ -63,8 +63,8 @@ app.use(express.static("views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "views")));
 app.use(function (req, res, next) {
-  res.locals.currentUser = req.user;
-  //res.locals.error=req.flash("error");
+  res.locals.currentUser = req.user; 
+  //res.locals.error=req.flash("error");- removing flash as no longer needed
   //res.locals.success=req.flash("success");
   next();
 });
