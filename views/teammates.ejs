@@ -234,7 +234,7 @@
               </div>
               <div class="card-body pt-5">
                 <!-- add mentor mentee condition here -->
-		<% if(comment.author.mentor_status == 1){ %>
+		<% if(user.is_mentor == 1){ %>
                     <img  src="../img/mentor.jpg" alt="profile-image" class="profile">
                   <% } else { %>
                     <img  src="../img/mentee.jpg" alt="profile-image" class="profile">
