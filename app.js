@@ -1,7 +1,5 @@
 // Imports
 require("dotenv").config({ path: ".env" });
-// var _ = require("lodash");
-// var lowerCase = require('lodash.lowercase');
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -12,16 +10,18 @@ const ejs = require("ejs");
 // Intialize the app
 const app = express();
 
-//passport authentication
+// Fetching the models
 var User = require("./db/models/users");
 var Post = require("./db/models/post");
 var Group = require("./db/models/group");
 var Comment=require("./db/models/comment");
+
+// Passport authentication
 var passport = require("passport");
 var localStrategy = require("passport-local"),
   methodOverride = require("method-override");
 app.use(
-  require("express-session")({
+  require("express-session")({ // allows authenticated users access the app
     secret: "This is the decryption key",
     resave: false,
     saveUninitialized: false,
@@ -32,18 +32,12 @@ app.use(
 var mongo_username = process.env.MONGO_USERNAME;
 var mongo_password = process.env.MONGO_PASSWORD;
 
-// Database connect
-// mongoose.connect("mongodb+srv://chehak:123@cluster0.ca1bc.mongodb.net/UserDB", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
 mongoose.connect(`mongodb+srv://${mongo_username}:${mongo_password}@cluster0.ca1bc.mongodb.net/UserDB`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-app.use(methodOverride("_method"));
+app.use(methodOverride("_method")); // method-override helps access app.delete() for log out
 app.use(passport.initialize()); //used to use passport for salt and hashing in our code
 app.use(passport.session());
 
@@ -64,12 +58,9 @@ app.use(bodyParser.json());
 // Loading static files
 app.use(express.static("public"));
 app.use(express.static("views"));
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "views")));
+
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user; 
-  //res.locals.error=req.flash("error");- removing flash as no longer needed
-  //res.locals.success=req.flash("success");
   next();
 });
 
@@ -88,7 +79,7 @@ app.get("/opportunities", function (req, res) {
     res.render("opportunities", {
       currentUser: req.user,
       post: post
-      });
+    });
   });
 });
 
@@ -127,9 +118,14 @@ newArray.push.apply(newArray, req.user.skills);
   });
  Group.create(group,function(err,newlyCreated){
 		if(err)
-		{console.log(err); res.redirect("/help");}
+		{
+      console.log(err);
+      res.redirect("/help");
+    }
 		else
-		{res.redirect("/help");}
+		{
+      res.redirect("/help");
+    }
 	});	
 });
 
@@ -292,7 +288,7 @@ app.post("/comment",function(req,res){
 })
 
 // Ports
-var PORT = 3000 || process.env.PORT;
+var PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Lazy bum on Port ${PORT}`);

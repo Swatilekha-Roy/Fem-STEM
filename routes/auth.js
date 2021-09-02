@@ -5,7 +5,7 @@ var User = require("../db/models/users");
 var middleware = require("../middleware"); //no need of writing index .js as directory always calls index.js by default
 
 //AUTH ROUTES
-//show register form
+//show register form when no active session
 router.get("/register", (req, res) => {
   res.redirect("/");
 });
@@ -21,18 +21,15 @@ router.post("/register", function (req, res) {
         return res.redirect("/register");
       } //in these cases always use res.redirect and not res.render as in res.render we dont go through the app.get route so the middlware where we specify req.error is not utilized
       passport.authenticate("local")(req, res, function () {
-        //req.flash("success","Welcome"+user.username);
         res.redirect("/");
       });
     }
   );
 });
 
-//show login form
+//show login form when session is inactive
 router.get("/login", function (req, res) {
-  //res.render("login.ejs");
   res.redirect("/" + "#login");
-  //res.redirect("/");
 });
 
 router.post(
@@ -43,6 +40,7 @@ router.post(
   }),
   function (req, res) {}
 );
+
 //LOGOUT
 router.get("/logout", function (req, res) {
   req.logout();

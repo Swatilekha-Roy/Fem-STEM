@@ -28,8 +28,7 @@
         display: none;
       }
 
-      .heads {
-        background: url();
+      .heads {       
         text-align: center;
         width: 100%;
         height: auto;
@@ -38,7 +37,7 @@
         position: relative;
         overflow: hidden;
         border-radius: -1 0 85% 85% / 92%;
-        }
+      }
 
         .overlay{
         width: 100%;
@@ -48,17 +47,17 @@
         background-image:linear-gradient(to right,  rgba(66, 65, 65, 0.73), rgba(163, 163, 163, 0.73)),
           url("img/opportunity.jpg");
         background-position: 50% 60%;
-        }
-      </style>
+      }
+    </style>
 
-<script> 
-  $(document).ready(function(){
-    $("#add").click(function(){
-      $("#addopportunity").slideToggle("slow");
-    });
-  });
-  </script>
-        
+    <script> 
+      $(document).ready(function(){
+        $("#add").click(function(){
+          $("#addopportunity").slideToggle("slow");
+        });
+      });
+    </script>
+            
     <!-- Title of Page -->
     <title>FemSTEM</title>
   </head>
@@ -194,7 +193,7 @@
           </div>
           
              
-          <%  post.forEach(function(post){ %>
+        <% post.forEach(function(post){ %>
             <div class="row flex-top" style="display: flex; margin: 2%;">
                <header class="border shadow comment-bg" style="padding: 4% 2%; background-color: #fceec5;">
                 <strong><h5 style="font-weight: 800;"><%=post.title%> : &nbsp;</h5></strong>
