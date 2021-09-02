@@ -1,8 +1,7 @@
 // Imports
 require("dotenv").config({ path: ".env" });
-const webPush = require("web-push");
-var _ = require("lodash");
-var lowerCase = require('lodash.lowercase');
+// var _ = require("lodash");
+// var lowerCase = require('lodash.lowercase');
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -10,16 +9,12 @@ var bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const ejs = require("ejs");
 
-const { resolveSoa } = require("dns");
-
 // Intialize the app
 const app = express();
 
 //passport authentication
 var User = require("./db/models/users");
-var Match = require("./db/models/match");
 var Post = require("./db/models/post");
-var MatchUser = require("./db/models/match");
 var Group = require("./db/models/group");
 var Comment=require("./db/models/comment");
 var passport = require("passport");
@@ -33,14 +28,23 @@ app.use(
   })
 );
 
+// Database user ids
+var mongo_username = process.env.MONGO_USERNAME;
+var mongo_password = process.env.MONGO_PASSWORD;
+
 // Database connect
-mongoose.connect("mongodb+srv://chehak:123@cluster0.ca1bc.mongodb.net/UserDB", {
+// mongoose.connect("mongodb+srv://chehak:123@cluster0.ca1bc.mongodb.net/UserDB", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+
+mongoose.connect(`mongodb+srv://${mongo_username}:${mongo_password}@cluster0.ca1bc.mongodb.net/UserDB`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 app.use(methodOverride("_method"));
-app.use(passport.initialize()); //use to use passport in our code
+app.use(passport.initialize()); //used to use passport for salt and hashing in our code
 app.use(passport.session());
 
 passport.use(new localStrategy(User.authenticate()));
@@ -215,50 +219,6 @@ var skillarr = new Array();
 var requser = new Array();
 app.get("/teammates", function (req, res) {
 
-  // requser.sort(function(a, b){
-  //   var x = a._id;
-  //   var y = b._id;
-  //   if (x < y) {return -1;}
-  //   if (x > y) {return 1;}
-  //   return 0;
-  // });
-
-  // for(var i=0;i<requser.length;i++){
-  //   console.log(requser[i].name);
-  // }
-
-  // console.log("i");
-
-  // for(var i=1;i<requser.length;i++){
-  //   console.log(requser[i-1].name);
-  //   console.log(requser[i].name);
-    
-  //   if(requser[i]._id===requser[i-1]._id){
-  //     cout<<"i";
-  //     requser.splice(i+1,1);
-  //     i--;
-  //   }
-  // }
-
-//   requser.splice(3,1);
-
-// console.log("i");
-
-  
-//   for(var i=1;i<requser.length;i++){
-//     console.log(requser[i]._id);
-//     // if(requser[i]===requser[i-1]){
-//       // requser.splice(,1);
-//       // i--;
-//     // }
-//   }
-
-  // for(var i=0;i<requser.length;i++){
-  //   console.log(requser[i]);
-  // }
-
-  // requser.sort();
-
   res.render("teammates", { 
     currentUser: req.user,
     requser: requser
@@ -330,8 +290,9 @@ app.post("/comment",function(req,res){
 			})}
 	})
 })
+
 // Ports
-const PORT = process.env.PORT || 3000;
+var PORT = 3000 || process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Lazy bum on Port ${PORT}`);
