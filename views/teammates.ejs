@@ -26,9 +26,9 @@
 
     <!-- Teammates Custom CSS -->
     <style>
-      *:hover{
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
+    *:hover{
+      -webkit-transition: all 1s ease;
+      transition: all 1s ease;
     }
     section{
         float:left;
@@ -106,14 +106,6 @@
       white-space:nowrap;
     }
     </style>
-
-    <!-- Teammates Custom Script -->
-    <script type="text/javascript">
-      function hidedumimg()
-      {
-        document.querySelector(".team-dum-img").style.display = "none";
-      }
-    </script>
   </head>
 
   
@@ -197,9 +189,7 @@
               <input class="form-check-input" type="checkbox" name="checked" id="cb13" value="ds"  /><label class="tag-team" for="cb13">Data Science</label>
               <input class="form-check-input" type="checkbox" name="checked" id="cb14" value="clang"  /><label class="tag-team" for="cb14">C++</label>
               <input class="form-check-input" type="checkbox" name="checked" id="cb15" value="java"  /><label class="tag-team" for="cb15">Java</label>
-
               <input class="form-check-input" type="checkbox" name="checked" id="cb23" value="php" /><label class="tag-team" for="cb23">PHP</label>
-              
               <input class="form-check-input" type="checkbox" name="checked" id="cb16" value="js"  /><label class="tag-team" for="cb16">Javascript</label>
               <input class="form-check-input" type="checkbox" name="checked" id="cb17" value="htm"  /><label class="tag-team" for="cb17">HTML 5, CSS 3</label>
               <input class="form-check-input" type="checkbox" name="checked" id="cb18" value="mon"  /><label class="tag-team" for="cb18">Mongo/ Cockroach/ Cassandra</label>
@@ -211,7 +201,7 @@
 
             <div class="row">
               <div class="col-8 col-md-3">
-                <button type="submit" onclick="hidedumimg()" class="submit-btn" style="margin-top: 4%; margin-bottom: 2%; width: 60%; border-radius: 8px; color: #fff;">Find Teammates</button>
+                <button type="submit" class="submit-btn" style="margin-top: 4%; margin-bottom: 2%; width: 60%; border-radius: 8px; color: #fff;">Find Teammates</button>
               </div>
             </div>            
           </form>      
@@ -234,7 +224,7 @@
               </div>
               <div class="card-body pt-5">
                 <!-- add mentor mentee condition here -->
-		<% if(user.is_mentor == 1){ %>
+		            <% if(user.is_mentor == 1){ %>
                     <img  src="../img/mentor.jpg" alt="profile-image" class="profile">
                   <% } else { %>
                     <img  src="../img/mentee.jpg" alt="profile-image" class="profile">
@@ -257,19 +247,6 @@
                     <%= skill %>
                   </span>                
                 <%}) %>   
-                  
-                  <!-- <span class="card-skilltag">Ui us</span>
-                  <span class="card-skilltag">Ui us</span>
-                  <span class="card-skilltag">Ui us</span>
-                  <span class="card-skilltag">Ui us</span>
-                  <span class="card-skilltag">Ui us</span>
-                  <span class="card-skilltag">Ui us</span>
-                  <span class="card-skilltag">Ui us</span>
-                  <span class="card-skilltag">Ui us</span>
-
-                  <span class="card-skilltag">Ui us</span> -->
-
-    
                 
                 <div class="icon-block" style="margin-top: 5%;">
                   <!-- Mail address -->

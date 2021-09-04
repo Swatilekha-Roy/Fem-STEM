@@ -29,25 +29,24 @@
       }
 
       .heads {
-        background: url();
-        text-align: center;
-        width: 100%;
-        height: auto;
-        background-size: cover;
-        background-attachment: fixed;
-        position: relative;
-        overflow: hidden;
-        border-radius: -1 0 85% 85% / 92%;
+          text-align: center;
+          width: 100%;
+          height: auto;
+          background-size: cover;
+          background-attachment: fixed;
+          position: relative;
+          overflow: hidden;
+          border-radius: -1 0 85% 85% / 92%;
         }
 
         .overlay{
-        width: 100%;
-        height: 80%;
-        color: #FFF;
-        text-shadow: 1px 1px 1px black;
-        background-image:linear-gradient(to right,  rgba(66, 65, 65, 0.73), rgba(163, 163, 163, 0.73)),
-          url("img/mentor_bg.jpg");
-        background-position: 50% 60%;
+          width: 100%;
+          height: 80%;
+          color: #FFF;
+          text-shadow: 1px 1px 1px black;
+          background-image:linear-gradient(to right,  rgba(66, 65, 65, 0.73), rgba(163, 163, 163, 0.73)),
+            url("img/mentor_bg.jpg");
+          background-position: 50% 60%;
         }
 
       </style>
@@ -60,13 +59,10 @@
           });
         });
       </script>
-
-
         
     <!-- Title of Page -->
     <title>FemSTEM</title>
   </head>
-
   
   <body>
     <%- include('modal_form') %>
@@ -129,13 +125,12 @@
 
     <div  class="heads overlay" style="background-color: rgb(243, 243, 243); padding: 10px; margin-top: 100px; margin-bottom: -70px;">
       <h2 style="padding: 80px; font-family: 'Sarina', cursive; color: rgb(185, 251, 253);">Ready to get your doubts cleared?</h2>
-      <p style="font-size: 25px;margin-top: -71px;text-align: center; font-family: 'Sarina', cursive; margin-bottom: 5%;">Join our mentor groups and ask away! If you're a mentor who is here to help take the women techie community forward, make sure to add your own group and help other mentees.</p>
-     
+      <p style="font-size: 25px;margin-top: -71px;text-align: center; font-family: 'Sarina', cursive; margin-bottom: 5%;">Join our mentor groups and ask away! If you're a mentor who is here to help take the women techie community forward, make sure to add your own group and help other mentees.</p>     
     </div>
 
 
-    <!-- Search functionality -->
     <div class="row search-j" style="margin-left: 5%; margin-top: 20vh; color:#c8f57c">
+      <!-- Search functionality -->
         <div class="col-lg-8">
             <form class="form-inline my-2 my-lg-0" style="margin-top: 10%;">
                 <div class="form-group">                                    
@@ -168,7 +163,7 @@
                   <label>Brief Description</label>
                   <textarea class="form-control" name="Description" rows="2" cols="70" placeholder="What will you discuss in the group? What kind of doubts could you solve best?" required></textarea><br>
                   <label>Group cover image Link (Approx. suggested dimensions: 700 x 300 px)</label>
-                  <input class="form-control" type="url" value="https://image.freepik.com/free-vector/technology-face-concept-futuristic-artificial-intelligence-design_1017-18714.jpg" onfocus="if (this.value=='https://image.freepik.com/free-vector/technology-face-concept-futuristic-artificial-intelligence-design_1017-18714.jpg') this.value='';" name="Link"><br>
+                  <input class="form-control" type="url" value="https://dl.dropboxusercontent.com/s/gq2thi21kvkqg4b/FemSTEM.png?dl=0" onfocus="if (this.value=='https://image.freepik.com/free-vector/technology-face-concept-futuristic-artificial-intelligence-design_1017-18714.jpg') this.value='';" name="Link"><br>
 
                 </div>
                 <button class="btn btn-primary" type="submit" name="button" style="background: #f3a8b5; float: right; ">Create!</button>                

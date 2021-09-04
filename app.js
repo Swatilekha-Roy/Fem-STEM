@@ -102,18 +102,16 @@ Group.find({}, function(err, group){
     res.render("help", {
       currentUser: req.user,
       groups: group
-      });
+    });
   });
 });
 
 app.post("/help",function(req,res){
-  var newArray = [];
-newArray.push.apply(newArray, req.user.skills);
   const group = new Group ({
     title: req.body.Title,
     description: req.body.Description,
     link: req.body.Link,
-    skills:newArray,
+    skills: req.user.skills,
     created_by: req.user.name
   });
  Group.create(group,function(err,newlyCreated){
@@ -130,40 +128,15 @@ newArray.push.apply(newArray, req.user.skills);
 });
 
 app.get("/help/:id", function (req, res) {
-  // const requestedname = req.params.groupname;
-
-  Group.findById(req.params.id).populate("comments").exec(function(err,found){ 
+    Group.findById(req.params.id).populate("comments").exec(function(err,found){ 
 		if(err)
 		{ console.log(err);}
 			else
       res.render("grouppage",{
         currentUser: req.user,
-        //mentorstat: req.user.is_mentor,
-        /*title: group.title,
-        description: group.description,
-        link: group.link,*/
         group: found
-       });
+      });
 	});
-  /*const requestedtitle=_.lowerCase(req.params.groupname);
-
-  Group.find({}, function(err, groups){
-  groups.forEach(function(group){
-    const storedtitle=_.lowerCase(group.title);
-
-    //  console.log(storedtitle);
-    //  console.log(requestedtitle);
-    if(storedtitle===requestedtitle){
-       res.render("grouppage",{
-        currentUser: req.user,
-        //mentorstat: req.user.is_mentor,
-        title: group.title,
-        description: group.description,
-        link: group.link,
-       });
-    }
-  });
-});*/
 });
 
 app.post("/help/:id",function(req,res){ 
@@ -172,24 +145,26 @@ app.post("/help/:id",function(req,res){
 		    console.log(err); 
 	}
 		else
-			//create new comments
-		{Comment.create(req.body.comment, function(err, newComment)
-						  {
+		//create new comments
+		{
+      Comment.create(req.body.comment, function(err, newComment)
+			{
 				if (err) {console.log(err); res.redirect("back");}
 				else
-				{ newComment.author.id=req.user._id;
-				 newComment.author.username=req.user.name;
-         newComment.author.mentor_status = req.user.is_mentor;
-         newComment.is_answered=0; //if its answered, then 1, else 0
-         newComment.text=req.body.text;
-				 newComment.save();
-					//add comment to campground
-					found.comments.push(newComment);
-				 //save comment
-				found.save();
-					//redirect to campground show page
-				
-				 res.redirect("/help/"+req.params.id);
+				{ 
+          newComment.author.id=req.user._id;
+          newComment.author.username=req.user.name;
+          newComment.author.mentor_status = req.user.is_mentor;
+          newComment.is_answered=0; //if its answered, then 1, else 0
+          newComment.text=req.body.text;
+          newComment.save();
+            //add comment to group
+            found.comments.push(newComment);
+            //save comment
+            found.save();
+            //redirect to group show page
+          
+          res.redirect("/help/"+req.params.id);
 				}
 			})}
 	})
@@ -199,6 +174,7 @@ app.post("/help/:id",function(req,res){
 app.get("/grouppage", function(req, res) {
   res.render("grouppage", { currentUser: req.user });
 });
+
 app.post("/grouppage", function(req, res) {
   commentdbt = req.body.Commentans;
   is_answered = req.body.Answerstat;
@@ -214,7 +190,6 @@ app.get("/tutorials", function (req, res) {
 var skillarr = new Array();
 var requser = new Array();
 app.get("/teammates", function (req, res) {
-
   res.render("teammates", { 
     currentUser: req.user,
     requser: requser
@@ -223,18 +198,15 @@ app.get("/teammates", function (req, res) {
 });
 
 //teammates posting
-app.post("/teammates", function (req, res) {
-  
+app.post("/teammates", function (req, res) {  
     for(var i=0; i<req.body.checked.length; i++)
     {
       skillarr[i] = req.body.checked[i];
-      // console.log(skillarr[i]);
     }
 
     var j=0;
-    for(var i=0;i<skillarr.length;i++){
+    for(var i=0; i<skillarr.length; i++){
        User.find({skills: { "$in" : [skillarr[i]]} }, function(err,requserdb){
-       // User.find({skills: { "$in" : skillarr} }, function(err,requserdb){
         requserdb.forEach(function(user){
           requser[j]=user;
           j++;
@@ -248,7 +220,6 @@ app.post("/teammates", function (req, res) {
 requser=[];
 skillarr = [];
 
-
 // Profile page rendering
 app.get("/profile", function (req, res) {
   res.render("profile", { currentUser: req.user});
@@ -258,34 +229,6 @@ app.get("/profile", function (req, res) {
 app.get("/pride", function (req, res) {
   res.render("pride", { currentUser: req.user });
 });
-//adding comments
-app.post("/comment",function(req,res){
-	//lookup group using id
-	Group.findById(req.params.id,function(err,found){
-		if(err){
-			req.flash("error","Sorry Campground not found");
-		    console.log(err); 
-			res.redirect("/campgrounds");}
-		else
-			//create new comments
-		{Comment.create(req.body.comment, function(err, newComment)
-						  {
-				if (err) {req.flash("error","Unable to create new comment");console.log(err); res.redirect("back");}
-				else
-				{ newComment.author.id=req.user._id;
-				 newComment.author.username=req.user.username;
-				 newComment.save();
-					//add comment to campground
-					found.comments.push(newComment);
-				 //save comment
-				found.save();
-					//redirect to campground show page
-				 req.flash("success","Comment successfully created!");
-				 res.redirect("/campgrounds/"+req.params.id);
-				}
-			})}
-	})
-})
 
 // Ports
 var PORT = process.env.PORT || 3000;
