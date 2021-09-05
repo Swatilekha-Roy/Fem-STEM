@@ -1,6 +1,3 @@
-/*import dotenv from '../../dotenv';
-dotenv.config();*/
-
 // Scroll to top arrow 
 $(window).scroll(function() {
     if ($(this).scrollTop() >= 50) {        
@@ -16,24 +13,14 @@ $('#return-to-top').click(function() {
 });
 
 
-// Tooltips
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();   
-  });
-
-  function showContent() {
-      document.querySelector(".mas-content").style.display = "inline";
-  }
-
 
 // Youtube tutorials
 var player; 
       function onYouTubeIframeAPIReady(vidId) {
-        console.log(vidId);
         player = new YT.Player('player', {
           height: '390',
           width: '640',
-          videoId: vidId ? vidId:'3TponA-LDj0',
+          videoId: vidId,
           playerVars: {
             'playsinline': 1
           },
@@ -60,10 +47,7 @@ var player;
         player.stopVideo();
       }
 
-
-
-
-      $(document).ready(function() {
+    $(document).ready(function() {
     var youtube_key = "AIzaSyBHA1Itn4r8RPJZ2Owkib9jCMBPWpEcYVU";
     var video = '';
 
@@ -96,27 +80,3 @@ var player;
       // %7Cwomenintech%7Cwomancoder%7Cfemalecoder%7Cgirlsintech%Ctechwomen
 
       // https://www.googleapis.com/youtube/v3/search?part=snippet&q=%23%23girlsintech%26%26javascript&key=AIzaSyBHA1Itn4r8RPJZ2Owkib9jCMBPWpEcYVU
-
-
-
-  // search functionality 
-  let search = document.querySelector('#searchTxthelp');
-  
-  searchTxthelp.addEventListener("input", function() {
-      let inputVal = search.value.toLowerCase();
-      let noteCards = document.querySelector('#noteCard');
-      console.log("I am here")
-      Array.from(noteCards).forEach(function(element) {
-          let cardTxt = element.getElementsByTagName("p")[0].innerText;
-          console.log("I am here")
-          if(cardTxt.includes(inputVal))
-          {
-              element.style.display = "block";
-               console.log("even here")
-          }
-          else
-          {
-              element.style.display = "none";
-          }
-      })
-  })

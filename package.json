@@ -21,8 +21,6 @@
         "express": "^4.17.1",
         "express-session": "^1.17.2",
         "heroku": "^7.54.0",
-        "lodash": "^4.17.21",
-        "lodash.lowercase": "^4.3.0",
         "method-override": "^3.0.0",
         "moment": "^2.29.1",
         "mongodb": "^3.6.9",

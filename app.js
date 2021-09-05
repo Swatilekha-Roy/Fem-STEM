@@ -1,7 +1,6 @@
 // Imports
 require("dotenv").config({ path: ".env" });
 const express = require("express");
-const path = require("path");
 const mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
@@ -14,14 +13,15 @@ const app = express();
 var User = require("./db/models/users");
 var Post = require("./db/models/post");
 var Group = require("./db/models/group");
-var Comment=require("./db/models/comment");
+var Comment = require("./db/models/comment");
 
 // Passport authentication
 var passport = require("passport");
 var localStrategy = require("passport-local"),
   methodOverride = require("method-override");
 app.use(
-  require("express-session")({ // allows authenticated users access the app
+  require("express-session")({
+    // allows authenticated users access the app
     secret: "This is the decryption key",
     resave: false,
     saveUninitialized: false,
@@ -32,10 +32,13 @@ app.use(
 var mongo_username = process.env.MONGO_USERNAME;
 var mongo_password = process.env.MONGO_PASSWORD;
 
-mongoose.connect(`mongodb+srv://${mongo_username}:${mongo_password}@cluster0.ca1bc.mongodb.net/UserDB`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  `mongodb+srv://${mongo_username}:${mongo_password}@cluster0.ca1bc.mongodb.net/UserDB`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 app.use(methodOverride("_method")); // method-override helps access app.delete() for log out
 app.use(passport.initialize()); //used to use passport for salt and hashing in our code
@@ -60,7 +63,7 @@ app.use(express.static("public"));
 app.use(express.static("views"));
 
 app.use(function (req, res, next) {
-  res.locals.currentUser = req.user; 
+  res.locals.currentUser = req.user;
   next();
 });
 
@@ -75,21 +78,21 @@ app.get("/", function (req, res) {
 
 // Opportunities page rendering
 app.get("/opportunities", function (req, res) {
-  Post.find({}, function(err, post){
+  Post.find({}, function (err, post) {
     res.render("opportunities", {
       currentUser: req.user,
-      post: post
+      post: post,
     });
   });
 });
 
-app.post("/opportunities",function(req,res){
-  const post = new Post ({
+app.post("/opportunities", function (req, res) {
+  const post = new Post({
     title: req.body.Title,
     description: req.body.Description,
     eligibility: req.body.Eligibility,
     deadline: req.body.Deadline,
-    link: req.body.Link
+    link: req.body.Link,
   });
 
   post.save();
@@ -98,84 +101,83 @@ app.post("/opportunities",function(req,res){
 
 // Mentoring(help) page rendering
 app.get("/help", function (req, res) {
-Group.find({}, function(err, group){
+  Group.find({}, function (err, group) {
     res.render("help", {
       currentUser: req.user,
-      groups: group
+      groups: group,
     });
   });
 });
 
-app.post("/help",function(req,res){
-  const group = new Group ({
+app.post("/help", function (req, res) {
+  const group = new Group({
     title: req.body.Title,
     description: req.body.Description,
     link: req.body.Link,
     skills: req.user.skills,
-    created_by: req.user.name
+    created_by: req.user.name,
   });
- Group.create(group,function(err,newlyCreated){
-		if(err)
-		{
+  Group.create(group, function (err, newlyCreated) {
+    if (err) {
       console.log(err);
       res.redirect("/help");
-    }
-		else
-		{
+    } else {
       res.redirect("/help");
     }
-	});	
+  });
 });
 
 app.get("/help/:id", function (req, res) {
-    Group.findById(req.params.id).populate("comments").exec(function(err,found){ 
-		if(err)
-		{ console.log(err);}
-			else
-      res.render("grouppage",{
-        currentUser: req.user,
-        group: found
-      });
-	});
+  Group.findById(req.params.id)
+    .populate("comments")
+    .exec(function (err, found) {
+      if (err) {
+        console.log(err);
+      } else
+        res.render("grouppage", {
+          currentUser: req.user,
+          group: found,
+        });
+    });
 });
 
-app.post("/help/:id",function(req,res){ 
-	Group.findById(req.params.id,function(err,found){
-		if(err){
-		    console.log(err); 
-	}
-		else
-		//create new comments
-		{
-      Comment.create(req.body.comment, function(err, newComment)
-			{
-				if (err) {console.log(err); res.redirect("back");}
-				else
-				{ 
-          newComment.author.id=req.user._id;
-          newComment.author.username=req.user.name;
+app.post("/help/:id", function (req, res) {
+  Group.findById(req.params.id, function (err, found) {
+    if (err) {
+      console.log(err);
+    }
+    //create new comments
+    else {
+      Comment.create(req.body.comment, function (err, newComment) {
+        if (err) {
+          console.log(err);
+          res.redirect("back");
+        } else {
+          newComment.author.id = req.user._id;
+          newComment.author.username = req.user.name;
           newComment.author.mentor_status = req.user.is_mentor;
-          newComment.is_answered=0; //if its answered, then 1, else 0
-          newComment.text=req.body.text;
+          newComment.is_answered = 0; //if its answered, then 1, else 0
+          newComment.text = req.body.text;
           newComment.save();
-            //add comment to group
-            found.comments.push(newComment);
-            //save comment
-            found.save();
-            //redirect to group show page
-          
-          res.redirect("/help/"+req.params.id);
-				}
-			})}
-	})
-})
+          //add comment to group
+          found.comments.push(newComment);
+          //save comment
+          found.save();
+          //redirect to group show page
+
+          res.redirect("/help/" + req.params.id);
+        }
+      });
+    }
+  });
+});
 
 // Groups page rendering
-app.get("/grouppage", function(req, res) {
+app.get("/grouppage", function (req, res) {
   res.render("grouppage", { currentUser: req.user });
 });
 
-app.post("/grouppage", function(req, res) {
+app.post("/grouppage", function (req, res) {
   commentdbt = req.body.Commentans;
   is_answered = req.body.Answerstat;
   console.log(is_answered);
@@ -190,39 +192,36 @@ app.get("/tutorials", function (req, res) {
 var skillarr = new Array();
 var requser = new Array();
 app.get("/teammates", function (req, res) {
-  res.render("teammates", { 
+  res.render("teammates", {
     currentUser: req.user,
-    requser: requser
+    requser: requser,
   });
-
 });
 
 //teammates posting
-app.post("/teammates", function (req, res) {  
-    for(var i=0; i<req.body.checked.length; i++)
-    {
-      skillarr[i] = req.body.checked[i];
-    }
+app.post("/teammates", function (req, res) {
+  for (var i = 0; i < req.body.checked.length; i++) {
+    skillarr[i] = req.body.checked[i];
+  }
 
-    var j=0;
-    for(var i=0; i<skillarr.length; i++){
-       User.find({skills: { "$in" : [skillarr[i]]} }, function(err,requserdb){
-        requserdb.forEach(function(user){
-          requser[j]=user;
-          j++;
-        });
-       
+  var j = 0;
+  for (var i = 0; i < skillarr.length; i++) {
+    User.find({ skills: { $in: [skillarr[i]] } }, function (err, requserdb) {
+      requserdb.forEach(function (user) {
+        requser[j] = user;
+        j++;
       });
-    }
-    res.redirect("/teammates");
+    });
+  }
+  res.redirect("/teammates");
 });
 
-requser=[];
+requser = [];
 skillarr = [];
 
 // Profile page rendering
 app.get("/profile", function (req, res) {
-  res.render("profile", { currentUser: req.user});
+  res.render("profile", { currentUser: req.user });
 });
 
 // pride page rendering
