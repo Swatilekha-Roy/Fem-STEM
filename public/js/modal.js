@@ -720,23 +720,3 @@ closebtn.addEventListener("click", function () {
   });
 
 }(window.jQuery);
-
-  
-
-// if (location.hash === "#login_failed") {
-//   $(".toast").toast("show");
-//   toast.innerText = "Invalid Username or Password!";
-// }
-
-// if (location.hash === "#login") {
-//   modal.style.display = "block";
-// }
-
-// if (location.hash === "#login_new_user") {
-//   $(".toast").toast("show");
-//   toast_color.style.backgroundColor = "green";
-//   toast_title.innerHTML = "Message!";
-//   toast.innerText =
-//     "Congratulations! account created successfully, Please login to Continue!";
-//   modal.style.display = "block";
-// }
