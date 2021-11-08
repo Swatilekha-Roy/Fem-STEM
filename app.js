@@ -41,8 +41,8 @@ mongoose.connect(
 );
 
 app.use(methodOverride("_method")); // method-override helps access app.delete() for log out
-app.use(passport.initialize()); //used to use passport for salt and hashing in our code
-app.use(passport.session());
+app.use(passport.initialize()); // used to initialize Passport, used to use passport for salt and hashing in our code
+app.use(passport.session()); // for persistent login sessions
 
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -131,6 +131,7 @@ app.get("/help/:id", function (req, res) {
   Group.findById(req.params.id)
     .populate("comments")
     .exec(function (err, found) {
+      // Every model method that accepts query conditions can be executed by means of a callback or the exec method.
       if (err) {
         console.log(err);
       } else
@@ -151,7 +152,7 @@ app.post("/help/:id", function (req, res) {
       Comment.create(req.body.comment, function (err, newComment) {
         if (err) {
           console.log(err);
-          res.redirect("back");
+          res.redirect("back"); // A back redirection redirects the request back to the referer, defaulting to / when the referer is missing.
         } else {
           newComment.author.id = req.user._id;
           newComment.author.username = req.user.name;
@@ -164,7 +165,6 @@ app.post("/help/:id", function (req, res) {
           //save comment
           found.save();
           //redirect to group show page
-
           res.redirect("/help/" + req.params.id);
         }
       });
@@ -180,7 +180,7 @@ app.get("/grouppage", function (req, res) {
 app.post("/grouppage", function (req, res) {
   commentdbt = req.body.Commentans;
   is_answered = req.body.Answerstat;
-  console.log(is_answered);
+  // console.log(is_answered);
 });
 
 // Tutorials page rendering
@@ -207,6 +207,7 @@ app.post("/teammates", function (req, res) {
   var j = 0;
   for (var i = 0; i < skillarr.length; i++) {
     User.find({ skills: { $in: [skillarr[i]] } }, function (err, requserdb) {
+      //  selects the documents where the value of a field equals any value in the specified array
       requserdb.forEach(function (user) {
         requser[j] = user;
         j++;
