@@ -2,7 +2,7 @@
 require("dotenv").config({ path: ".env" });
 const express = require("express");
 const mongoose = require("mongoose");
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const ejs = require("ejs");
 
@@ -10,14 +10,14 @@ const ejs = require("ejs");
 const app = express();
 
 // Fetching the models
-var User = require("./db/models/users");
-var Post = require("./db/models/post");
-var Group = require("./db/models/group");
-var Comment = require("./db/models/comment");
+const User = require("./db/models/users");
+const Post = require("./db/models/post");
+const Group = require("./db/models/group");
+const Comment = require("./db/models/comment");
 
 // Passport authentication
-var passport = require("passport");
-var localStrategy = require("passport-local"),
+const passport = require("passport");
+const localStrategy = require("passport-local"),
   methodOverride = require("method-override");
 app.use(
   require("express-session")({

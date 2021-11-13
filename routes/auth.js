@@ -1,8 +1,8 @@
-var express = require("express");
-var router = express.Router(); // used to create a new router object
-var passport = require("passport");
-var User = require("../db/models/users");
-var middleware = require("../middleware"); // no need of writing index .js as directory always calls index.js by default
+const express = require("express");
+const router = express.Router(); // used to create a new router object
+const passport = require("passport");
+const User = require("../db/models/users");
+const middleware = require("../middleware"); // no need of writing index .js as directory always calls index.js by default
 
 //AUTH ROUTES
 //show register form when no active session
